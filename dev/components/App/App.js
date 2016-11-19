@@ -17,10 +17,10 @@ export default class App extends Component {
     };
   }
 
-  flickrApi() {
+  getFlickrFeed() {
     const xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'http://localhost:3030/testApi');
+    xhr.open('GET', 'http://localhost:3030/flickrfeed');
 
     xhr.onload = () => {
       const res = xhr.response;
@@ -68,7 +68,7 @@ export default class App extends Component {
         <div>
           <Title text={this.state.title} />
           
-          <button onClick={this.flickrApi()}>Get Images</button>
+          <button onClick={this.getFlickrFeed()}>Get Images</button>
 
           <ImageContainer>
             {

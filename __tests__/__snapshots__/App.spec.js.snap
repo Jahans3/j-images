@@ -1,0 +1,17 @@
+exports[`test App 1`] = `
+<div>
+  <div
+    className={undefined}>
+    <h1
+      className={undefined}>
+      
+    </h1>
+  </div>
+  <button
+    onClick={undefined}>
+    Get Images
+  </button>
+  <ul
+    className={undefined} />
+</div>
+`;

@@ -65,11 +65,14 @@ export default class Image extends Component {
   }
 
   componentDidMount() {
-    document.getElementById(`imageK${this.props.idKey}`).addEventListener('click', this.toggleSelected);
+    const image = document.getElementById(`imageK${this.props.idKey}`);
+    
+    if (!image) return;
+    
+    image.addEventListener('click', this.toggleSelected);
   }
 
   render() {
-
     return (
         <li className={ s.listItem }>
           <div id={ `imageK${this.props.idKey}` } className={ `${s.innerWrap} ${this.state.isSelected ? 'selected' : ''}` }>

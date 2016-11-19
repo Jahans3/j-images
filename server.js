@@ -4,7 +4,7 @@ const http = require('http').Server(app);
 const routes = express.Router();
 const request = require('request');
 
-const testApi = () => {
+const getFlickrFeed = () => {
   return new Promise((resolve, reject) => {
     request.get({
       url: 'https://api.flickr.com/services/feeds/photos_public.gne?id=24662369@N07&format=json&nojsoncallback=1',
@@ -21,8 +21,8 @@ const testApi = () => {
   });
 };
 
-routes.get('/testApi', (req, res) => {
-  testApi()
+routes.get('/flickrfeed', (req, res) => {
+  getFlickrFeed()
       .then((val) => {
         res.send(val);
       })

@@ -1,0 +1,19 @@
+exports[`test ImageContainer 1`] = `
+<ul
+  className={undefined}>
+  <li
+    className={undefined}>
+    <div
+      className="undefined "
+      id="imageK1">
+      <h4
+        className={undefined}>
+        title
+      </h4>
+      <img
+        alt="Alt text"
+        src="http://some.src" />
+    </div>
+  </li>
+</ul>
+`;

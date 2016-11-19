@@ -21792,13 +21792,13 @@
 	  }
 	
 	  _createClass(App, [{
-	    key: 'flickrApi',
-	    value: function flickrApi() {
+	    key: 'getFlickrFeed',
+	    value: function getFlickrFeed() {
 	      var _this2 = this;
 	
 	      var xhr = new XMLHttpRequest();
 	
-	      xhr.open('GET', 'http://localhost:3030/testApi');
+	      xhr.open('GET', 'http://localhost:3030/flickrfeed');
 	
 	      xhr.onload = function () {
 	        var res = xhr.response;
@@ -21848,7 +21848,7 @@
 	        _react2.default.createElement(_Title2.default, { text: this.state.title }),
 	        _react2.default.createElement(
 	          'button',
-	          { onClick: this.flickrApi() },
+	          { onClick: this.getFlickrFeed() },
 	          'Get Images'
 	        ),
 	        _react2.default.createElement(
@@ -22472,12 +22472,15 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      document.getElementById('imageK' + this.props.idKey).addEventListener('click', this.toggleSelected);
+	      var image = document.getElementById('imageK' + this.props.idKey);
+	
+	      if (!image) return;
+	
+	      image.addEventListener('click', this.toggleSelected);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	
 	      return _react2.default.createElement(
 	        'li',
 	        { className: _Image2.default.listItem },
