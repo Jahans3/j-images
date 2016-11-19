@@ -22451,22 +22451,26 @@
 	        this.setState({ isSelected: true });
 	      }
 	
-	      console.log('toggley toggley');
-	      console.log(ls.getItem('flickrImages'));
-	
 	      ls.setItem('flickrImages', JSON.stringify(existing));
 	    }
 	  }, {
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      // if ID exists in localStorage set state.isSelected to true
+	    key: 'findSelectedImages',
+	    value: function findSelectedImages() {
 	      var lsRaw = window.localStorage.getItem('flickrImages');
+	
+	      if (!lsRaw) return;
+	
 	      var lsParsed = JSON.parse(lsRaw);
 	      var hasThisImage = lsParsed.includes('imageK' + this.props.idKey);
 	
 	      if (hasThisImage) {
 	        this.setState({ isSelected: true });
 	      }
+	    }
+	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.findSelectedImages();
 	    }
 	  }, {
 	    key: 'componentDidMount',
