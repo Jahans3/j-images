@@ -2,6 +2,9 @@
  * Created by jahansj on 16/11/2016.
  */
 import React, { Component } from 'react';
+import Title from '../Title/Title';
+import ImageContainer from '../ImageContainer/ImageContainer';
+import Image from '../Image/Image';
 import s from './App.css';
 
 export default class App extends Component {
@@ -10,12 +13,14 @@ export default class App extends Component {
 
     // Pull out same images each time (see:docs)
     // Use cookies or local storage to remember user's choices
-    // get all <content> tags from XML
-    // Identify and apply classes
 
+    this.state = {
+      title: '',
+      images: []
+    };
   }
 
-  testApi() {
+  flickrApi() {
     const xhr = new XMLHttpRequest();
 
     xhr.open('GET', 'http://localhost:3030/testApi');
@@ -26,24 +31,53 @@ export default class App extends Component {
       if (!res || xhr.status !== 200) {
         return console.log('Bad response');
       }
-
-      console.log(this.parseXML(res));
+      
+      this.getData(res);
     };
 
     xhr.send();
   }
+  
+  getData(response) {
+    const obj = JSON.parse(response);
 
-  parseXML(XML) {
-    const parser = new DOMParser();
+    if (typeof obj !== 'object' || !obj.hasOwnProperty('items') || !obj.hasOwnProperty('title')){
+      return console.warn('Unexpected response');
+    }
 
-    return parser.parseFromString(XML, 'application/xml');
+    const items = obj.items;
+    const imageList = [];
+
+    for (let i = 0, length = items.length; i < length; i++) {
+      imageList.push(
+          <Image
+              title={ items[i].title }
+              src={ items[i].media.m }
+              alt={ items[i].title }
+              idKey={ i }
+              key={ i }
+          />
+      );
+    }
+
+    this.setState({
+      title: response.title,
+      images: imageList
+    });
   }
 
   render() {
     return (
         <div>
-          It's aliiiiiivee
-          <button onClick={this.testApi()}>Test API</button>
+          <Title text={this.state.title} />
+          
+          <button onClick={this.flickrApi()}>Get Images</button>
+
+          <ImageContainer>
+            {
+                this.state.images
+            }
+          </ImageContainer>
         </div>
     )
   }

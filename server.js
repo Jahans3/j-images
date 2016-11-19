@@ -6,7 +6,12 @@ const request = require('request');
 
 const testApi = () => {
   return new Promise((resolve, reject) => {
-    request.get('https://api.flickr.com/services/feeds/photos_public.gne', (err, res, body) => {
+    request.get({
+      url: 'https://api.flickr.com/services/feeds/photos_public.gne?id=24662369@N07&format=json&nojsoncallback=1',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }, (err, res, body) => {
       if (err) {
         return reject(`testApi Error: ${err}`);
       }

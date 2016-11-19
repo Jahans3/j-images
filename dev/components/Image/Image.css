@@ -1,0 +1,8 @@
+.listItem {
+    display: inline-block;
+}
+
+.innerWrap {
+    height: 300px;
+    width: 300px;
+}

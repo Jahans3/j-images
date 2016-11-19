@@ -21741,13 +21741,27 @@
 	  value: true
 	});
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _App = __webpack_require__(184);
+	var _Title = __webpack_require__(184);
+	
+	var _Title2 = _interopRequireDefault(_Title);
+	
+	var _ImageContainer = __webpack_require__(189);
+	
+	var _ImageContainer2 = _interopRequireDefault(_ImageContainer);
+	
+	var _Image = __webpack_require__(192);
+	
+	var _Image2 = _interopRequireDefault(_Image);
+	
+	var _App = __webpack_require__(195);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
@@ -21768,17 +21782,21 @@
 	  function App() {
 	    _classCallCheck(this, App);
 	
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-	
 	    // Pull out same images each time (see:docs)
 	    // Use cookies or local storage to remember user's choices
-	    // get all <content> tags from XML
-	    // Identify and apply classes
+	
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+	
+	    _this.state = {
+	      title: '',
+	      images: []
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(App, [{
-	    key: 'testApi',
-	    value: function testApi() {
+	    key: 'flickrApi',
+	    value: function flickrApi() {
 	      var _this2 = this;
 	
 	      var xhr = new XMLHttpRequest();
@@ -21792,17 +21810,37 @@
 	          return console.log('Bad response');
 	        }
 	
-	        console.log(_this2.parseXML(res));
+	        _this2.getData(res);
 	      };
 	
 	      xhr.send();
 	    }
 	  }, {
-	    key: 'parseXML',
-	    value: function parseXML(XML) {
-	      var parser = new DOMParser();
+	    key: 'getData',
+	    value: function getData(response) {
+	      var obj = JSON.parse(response);
 	
-	      return parser.parseFromString(XML, 'application/xml');
+	      if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || !obj.hasOwnProperty('items') || !obj.hasOwnProperty('title')) {
+	        return console.warn('Unexpected response');
+	      }
+	
+	      var items = obj.items;
+	      var imageList = [];
+	
+	      for (var i = 0, length = items.length; i < length; i++) {
+	        imageList.push(_react2.default.createElement(_Image2.default, {
+	          title: items[i].title,
+	          src: items[i].media.m,
+	          alt: items[i].title,
+	          idKey: i,
+	          key: i
+	        }));
+	      }
+	
+	      this.setState({
+	        title: response.title,
+	        images: imageList
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -21810,11 +21848,16 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'It\'s aliiiiiivee',
+	        _react2.default.createElement(_Title2.default, { text: this.state.title }),
 	        _react2.default.createElement(
 	          'button',
-	          { onClick: this.testApi() },
-	          'Test API'
+	          { onClick: this.flickrApi() },
+	          'Get Images'
+	        ),
+	        _react2.default.createElement(
+	          _ImageContainer2.default,
+	          null,
+	          this.state.images
 	        )
 	      );
 	    }
@@ -21829,20 +21872,80 @@
 /* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Title = __webpack_require__(185);
+	
+	var _Title2 = _interopRequireDefault(_Title);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by jahansj on 19/11/2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	
+	var Title = function (_Component) {
+	  _inherits(Title, _Component);
+	
+	  function Title() {
+	    _classCallCheck(this, Title);
+	
+	    return _possibleConstructorReturn(this, (Title.__proto__ || Object.getPrototypeOf(Title)).call(this));
+	  }
+	
+	  _createClass(Title, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _Title2.default.wrapper },
+	        _react2.default.createElement(
+	          'h1',
+	          { className: _Title2.default.titleText },
+	          this.props.text
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Title;
+	}(_react.Component);
+	
+	exports.default = Title;
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(185);
+	var content = __webpack_require__(186);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(187)(content, {});
+	var update = __webpack_require__(188)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./App.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./App.css");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./Title.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./Title.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -21852,10 +21955,10 @@
 	}
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(186)();
+	exports = module.exports = __webpack_require__(187)();
 	// imports
 	
 	
@@ -21866,7 +21969,7 @@
 
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports) {
 
 	/*
@@ -21922,7 +22025,7 @@
 
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -22171,6 +22274,300 @@
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
+
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ImageContainer = __webpack_require__(190);
+	
+	var _ImageContainer2 = _interopRequireDefault(_ImageContainer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by jahansj on 19/11/2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	
+	var ImageContainer = function (_Component) {
+	  _inherits(ImageContainer, _Component);
+	
+	  function ImageContainer() {
+	    _classCallCheck(this, ImageContainer);
+	
+	    return _possibleConstructorReturn(this, (ImageContainer.__proto__ || Object.getPrototypeOf(ImageContainer)).call(this));
+	  }
+	
+	  _createClass(ImageContainer, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'ul',
+	        { className: _ImageContainer2.default.container },
+	        this.props.children
+	      );
+	    }
+	  }]);
+	
+	  return ImageContainer;
+	}(_react.Component);
+	
+	exports.default = ImageContainer;
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(191);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(188)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./ImageContainer.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./ImageContainer.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(187)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Image = __webpack_require__(193);
+	
+	var _Image2 = _interopRequireDefault(_Image);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by jahansj on 19/11/2016.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	
+	var Image = function (_Component) {
+	  _inherits(Image, _Component);
+	
+	  function Image() {
+	    _classCallCheck(this, Image);
+	
+	    var _this = _possibleConstructorReturn(this, (Image.__proto__ || Object.getPrototypeOf(Image)).call(this));
+	
+	    _this.extractID = _this.extractID.bind(_this);
+	    _this.toggleSelected = _this.toggleSelected.bind(_this);
+	
+	    _this.state = {
+	      selected: {
+	        isSelected: false,
+	        className: 'selected',
+	        id: _this.extractID()
+	      }
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Image, [{
+	    key: 'extractID',
+	    value: function extractID() {
+	      if (!this.props) return;
+	
+	      var src = this.props.src;
+	
+	      src = src.split('/');
+	      src = src[src.length - 1];
+	
+	      return src.split('.')[0];
+	    }
+	  }, {
+	    key: 'toggleSelected',
+	    value: function toggleSelected() {
+	      var ls = window.localStorage;
+	      var existing = JSON.parse(localStorage.getItem('flickrImages')) || [];
+	      var index = existing.indexOf('imageK' + this.props.idKey);
+	
+	      if (index !== -1) {
+	        existing.splice(index, 1);
+	        this.setState({ isSelected: false });
+	      } else {
+	        existing.push('imageK' + this.props.idKey);
+	        this.setState({ isSelected: true });
+	      }
+	
+	      console.log('toggley toggley');
+	      console.log(ls.getItem('flickrImages'));
+	
+	      ls.setItem('flickrImages', JSON.stringify(existing));
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      document.getElementById('imageK' + this.props.idKey).addEventListener('click', this.toggleSelected);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	
+	      return _react2.default.createElement(
+	        'li',
+	        { className: _Image2.default.listItem },
+	        _react2.default.createElement(
+	          'div',
+	          { id: 'imageK' + this.props.idKey, className: _Image2.default.innerWrap + ' ' + (this.state.isSelected ? 'selected' : '') },
+	          _react2.default.createElement(
+	            'h4',
+	            { className: _Image2.default.title },
+	            this.props.title
+	          ),
+	          _react2.default.createElement('img', { src: this.props.src, alt: this.props.alt })
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Image;
+	}(_react.Component);
+	
+	exports.default = Image;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(194);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(188)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./Image.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./Image.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(187)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".Image__listItem___18D-9 {\n    display: inline-block;\n}\n\n.Image__innerWrap___2uAZL {\n    height: 300px;\n    width: 300px;\n}", ""]);
+	
+	// exports
+	exports.locals = {
+		"listItem": "Image__listItem___18D-9",
+		"innerWrap": "Image__innerWrap___2uAZL"
+	};
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(196);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(188)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./App.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!./App.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(187)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "", ""]);
+	
+	// exports
 
 
 /***/ }
