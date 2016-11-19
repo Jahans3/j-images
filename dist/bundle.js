@@ -21782,9 +21782,6 @@
 	  function App() {
 	    _classCallCheck(this, App);
 	
-	    // Pull out same images each time (see:docs)
-	    // Use cookies or local storage to remember user's choices
-	
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 	
 	    _this.state = {

@@ -11,9 +11,6 @@ export default class App extends Component {
   constructor() {
     super();
 
-    // Pull out same images each time (see:docs)
-    // Use cookies or local storage to remember user's choices
-
     this.state = {
       title: '',
       images: []
