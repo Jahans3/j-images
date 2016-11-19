@@ -22457,6 +22457,18 @@
 	      ls.setItem('flickrImages', JSON.stringify(existing));
 	    }
 	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      // if ID exists in localStorage set state.isSelected to true
+	      var lsRaw = window.localStorage.getItem('flickrImages');
+	      var lsParsed = JSON.parse(lsRaw);
+	      var hasThisImage = lsParsed.includes('imageK' + this.props.idKey);
+	
+	      if (hasThisImage) {
+	        this.setState({ isSelected: true });
+	      }
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      document.getElementById('imageK' + this.props.idKey).addEventListener('click', this.toggleSelected);

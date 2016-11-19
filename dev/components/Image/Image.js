@@ -44,15 +44,18 @@ export default class Image extends Component {
       this.setState({ isSelected: true });
     }
 
-    console.log('toggley toggley');
-    console.log(ls.getItem('flickrImages'));
-
     ls.setItem('flickrImages', JSON.stringify(existing));
   }
   
   componentWillMount() {
     // if ID exists in localStorage set state.isSelected to true
-    const selectedimages = window.localStorage.getItem('')
+    const lsRaw = window.localStorage.getItem('flickrImages');
+    const lsParsed = JSON.parse(lsRaw);
+    const hasThisImage =lsParsed.includes(`imageK${this.props.idKey}`);
+
+    if (hasThisImage) {
+      this.setState({ isSelected: true });
+    }
   }
 
   componentDidMount() {
