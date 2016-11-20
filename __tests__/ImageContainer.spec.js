@@ -6,15 +6,13 @@ import renderer from 'react-test-renderer'
 import ImageContainer from '../dev/components/ImageContainer/ImageContainer';
 import Image from '../dev/components/Image/Image';
 
-const addProps = (obj, mock = 'localStorage') => {
-  obj[mock] = {
-    getItem: (item) => null,
-    setItem: (key, value) => true
-  };
+const addProps = (obj, mock) => obj[mock] = {
+  getItem: item => null,
+  setItem: (key, value) => true
 };
 
 test('ImageContainer', () => {
-  addProps(window);
+  addProps(window, 'localStorage'); // Mock localStorage
   
   const tree = renderer.create(
     <ImageContainer>

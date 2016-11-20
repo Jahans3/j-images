@@ -56,11 +56,15 @@ export default class App extends Component {
           />
       );
     }
-
+    
     this.setState({
-      title: response.title,
+      title: obj.title,
       images: imageList
     });
+  }
+  
+  componentDidMount() {
+    this.getFlickrFeed();
   }
 
   render() {
@@ -68,8 +72,6 @@ export default class App extends Component {
         <div>
           <Title text={this.state.title} />
           
-          <button onClick={this.getFlickrFeed()}>Get Images</button>
-
           <ImageContainer>
             {
                 this.state.images

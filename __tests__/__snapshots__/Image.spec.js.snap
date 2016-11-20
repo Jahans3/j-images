@@ -1,0 +1,16 @@
+exports[`test Image 1`] = `
+<li
+  className={undefined}>
+  <div
+    className="undefined "
+    id="imageK0">
+    <h4
+      className={undefined}>
+      Title Text
+    </h4>
+    <img
+      alt="Alt Text"
+      src="http://some.src" />
+  </div>
+</li>
+`;
