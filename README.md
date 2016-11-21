@@ -10,4 +10,4 @@ first run `npm install`
 ### Bonus
 Unit test suite using `jest`
 
-Fully compatible across modern browsers
+Tested on Firefox, Safari and Chrome
